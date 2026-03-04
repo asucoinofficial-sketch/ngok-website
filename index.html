@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NGOK | Network Growth On-chain Kinetics</title>
+  <meta name="description" content="NGOK is a community-driven Solana memecoin. Strong foundations > fast pumps. 100% fair launch." />
+  <meta name="theme-color" content="#0b1220" />
+
+  <style>
+    :root{
+      --bg:#070b14;
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.08);
+      --line:rgba(255,255,255,.12);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.70);
+      --muter:rgba(255,255,255,.55);
+      --brand:#7dd3fc;
+      --brand2:#a78bfa;
+      --good:#22c55e;
+      --warn:#f59e0b;
+      --bad:#ef4444;
+      --shadow: 0 20px 70px rgba(0,0,0,.55);
+      --radius: 18px;
+      --radius2: 26px;
+      --max: 1120px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(125,211,252,.22), transparent 60%),
+        radial-gradient(900px 600px at 85% 0%, rgba(167,139,250,.22), transparent 55%),
+        radial-gradient(900px 700px at 60% 115%, rgba(34,197,94,.14), transparent 55%),
+        var(--bg);
+      overflow-x:hidden;
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 20px}
+    .nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(to bottom, rgba(7,11,20,.72), rgba(7,11,20,.38));
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .nav-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 0; gap:14px}
+    .brand{
+      display:flex; align-items:center; gap:10px; text-decoration:none;
+      font-weight:800; letter-spacing:.3px;
+    }
+    .brand-badge{
+      width:36px; height:36px; border-radius:12px;
+      background: linear-gradient(135deg, rgba(125,211,252,.35), rgba(167,139,250,.35));
+      border:1px solid rgba(255,255,255,.14);
+      display:grid; place-items:center;
+      box-shadow: 0 10px 40px rgba(0,0,0,.35);
+    }
+    .brand-badge img{width:26px;height:26px; border-radius:10px; object-fit:cover}
+    .nav-links{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .chip{
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      text-decoration:none;
+      font-weight:650;
+      color:var(--muted);
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .chip:hover{transform: translateY(-1px); background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.18)}
+    .btn{
+      padding:11px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.08);
+      text-decoration:none;
+      font-weight:800;
+      color:var(--text);
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      display:inline-flex; align-items:center; gap:10px;
+    }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(34,197,94,.95), rgba(125,211,252,.78));
+      border-color: rgba(255,255,255,.18);
+      color:#071018;
+      box-shadow: 0 14px 40px rgba(34,197,94,.18);
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.2)}
+    .hero{padding:48px 0 18px}
+    .hero-grid{
+      display:grid; gap:18px;
+      grid-template-columns: 1.2fr .8fr;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns:1fr}
+    }
+    .panel{
+      background: var(--panel);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+    }
+    .hero-left{padding:28px}
+    .kicker{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      font-weight:700;
+      letter-spacing:.2px;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:999px;background:var(--good);
+      box-shadow: 0 0 0 6px rgba(34,197,94,.12);
+    }
+    h1{
+      margin:14px 0 10px;
+      font-size: clamp(34px, 4.4vw, 56px);
+      line-height:1.03;
+      letter-spacing:-.9px;
+    }
+    .sub{
+      font-size: 16px;
+      line-height:1.6;
+      color: var(--muted);
+      max-width: 62ch;
+    }
+    .cta-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px}
+    .stats{
+      display:grid; grid-template-columns: repeat(4,1fr);
+      gap:10px; margin-top:18px;
+    }
+    @media (max-width: 980px){ .stats{grid-template-columns: repeat(2,1fr)} }
+    .stat{
+      padding:14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      text-align:left;
+    }
+    .stat .label{color:var(--muter); font-weight:700; font-size:12px; letter-spacing:.25px; text-transform:uppercase}
+    .stat .value{margin-top:6px; font-weight:900; font-size:16px; letter-spacing:.1px}
+    .stat .small{margin-top:4px; color:var(--muter); font-size:12px}
+
+    .hero-right{padding:18px; display:flex; flex-direction:column; gap:12px}
+    .mascot{
+      display:flex; align-items:center; gap:14px;
+      padding:16px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      background: linear-gradient(135deg, rgba(125,211,252,.12), rgba(167,139,250,.10));
+    }
+    .mascot img{
+      width:56px;height:56px;border-radius:18px; object-fit:cover;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+    }
+    .mascot .m-title{font-weight:900}
+    .mascot .m-sub{color:var(--muted); font-size:13px; margin-top:2px}
+    .copybox{
+      padding:16px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+    }
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+    .ca{
+      word-break: break-all;
+      color: rgba(255,255,255,.86);
+      font-weight:700;
+      font-size: 13px;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      background: rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .mini{
+      font-size:12px; color: var(--muter);
+    }
+
+    .section{padding:26px 0}
+    .section h2{
+      font-size: 22px; margin:0 0 12px;
+      letter-spacing:-.25px;
+    }
+    .grid{
+      display:grid; gap:14px;
+      grid-template-columns: repeat(12,1fr);
+    }
+    .card{
+      grid-column: span 6;
+      padding:18px;
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+    }
+    @media (max-width: 980px){ .card{grid-column: span 12} }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      font-weight:800;
+      font-size:12px;
+      color: rgba(255,255,255,.85);
+    }
+    .icon{
+      width:10px;height:10px;border-radius:999px;background:var(--brand);
+      box-shadow:0 0 0 6px rgba(125,211,252,.12);
+    }
+    .list{margin:10px 0 0; padding:0 0 0 18px; color:var(--muted); line-height:1.65}
+    .list li{margin:6px 0}
+    .chart{
+      padding:14px;
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      overflow:hidden;
+    }
+    .chart iframe{
+      width:100%;
+      height:520px;
+      border:0;
+      border-radius: 16px;
+      background: rgba(0,0,0,.18);
+    }
+    @media (max-width: 720px){
+      .chart iframe{height:560px}
+    }
+
+    .roadmap{
+      display:grid; gap:12px;
+    }
+    .step{
+      padding:16px;
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      display:flex; gap:12px; align-items:flex-start;
+    }
+    .step .num{
+      width:34px;height:34px;border-radius:14px;
+      display:grid; place-items:center;
+      font-weight:900;
+      background: rgba(125,211,252,.14);
+      border:1px solid rgba(255,255,255,.14);
+    }
+    .step .title{font-weight:900}
+    .step .desc{color:var(--muted); margin-top:4px; line-height:1.55}
+
+    details{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      border-radius: var(--radius);
+      padding:14px 16px;
+    }
+    details + details{margin-top:10px}
+    summary{cursor:pointer; font-weight:900}
+    details p{margin:10px 0 0; color:var(--muted); line-height:1.6}
+
+    .footer{
+      padding:30px 0 46px;
+      color: var(--muter);
+      font-size:12px;
+      border-top:1px solid rgba(255,255,255,.08);
+      margin-top: 22px;
+    }
+    .toast{
+      position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(17,24,39,.88);
+      color: rgba(255,255,255,.9);
+      box-shadow: var(--shadow);
+      opacity:0; pointer-events:none;
+      transition: opacity .18s ease, transform .18s ease;
+      font-size:13px; font-weight:750;
+    }
+    .toast.show{opacity:1; transform:translateX(-50%) translateY(-4px)}
+  </style>
+</head>
+
+<body>
+  <div class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top">
+        <span class="brand-badge">
+          <img src="ngok.png" alt="NGOK" onerror="this.style.display='none'"/>
+        </span>
+        <span>NGOK</span>
+      </a>
+
+      <div class="nav-links">
+        <a class="chip" href="#chart">Chart</a>
+        <a class="chip" href="#tokenomics">Tokenomics</a>
+        <a class="chip" href="#roadmap">Roadmap</a>
+        <a class="chip" href="#faq">FAQ</a>
+        <a class="btn primary" href="https://dexscreener.com/solana/hwhfdt2qynd97uuifdh9phtxcnm5qa7zspcfvav3uqhv" target="_blank" rel="noreferrer">Buy NGOK</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="top" class="wrap hero">
+    <div class="hero-grid">
+      <div class="panel hero-left">
+        <div class="kicker"><span class="dot"></span> Strong foundations &gt; fast pumps</div>
+        <h1>NGOK<br/>Network Growth On-chain Kinetics</h1>
+        <div class="sub">
+          A community-driven Solana memecoin focused on momentum through consistency:
+          community, liquidity health, and transparent info. Stay early. Stay NGOK.
+        </div>
+
+        <div class="cta-row">
+          <a class="btn primary" href="https://dexscreener.com/solana/hwhfdt2qynd97uuifdh9phtxcnm5qa7zspcfvav3uqhv" target="_blank" rel="noreferrer">Buy on Dexscreener</a>
+          <a class="btn" href="https://t.me/+IQg9S6bCVXMwNjBl" target="_blank" rel="noreferrer">Join Telegram</a>
+          <a class="btn" href="https://x.com/ASUverse" target="_blank" rel="noreferrer">Follow X</a>
+          <button class="btn" id="copyBtn" type="button" style="cursor:pointer">Copy CA</button>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="label">Chain</div>
+            <div class="value">Solana</div>
+            <div class="small">Fast + low fees</div>
+          </div>
+          <div class="stat">
+            <div class="label">Total Supply</div>
+            <div class="value">1.1B NGOK</div>
+            <div class="small">Fixed supply</div>
+          </div>
+          <div class="stat">
+            <div class="label">Launch</div>
+            <div class="value">Fair Launch</div>
+            <div class="small">Community first</div>
+          </div>
+          <div class="stat">
+            <div class="label">Status</div>
+            <div class="value">Live</div>
+            <div class="small">Track on Dexscreener</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel hero-right">
+        <div class="mascot">
+          <img src="ngok.png" alt="NGOK mascot" onerror="this.style.display='none'">
+          <div>
+            <div class="m-title">NGOK Mascot</div>
+            <div class="m-sub">Drop <span class="mono">ngok.png</span> in the repo for instant branding.</div>
+          </div>
+        </div>
+
+        <div class="copybox">
+          <div class="row">
+            <div>
+              <div style="font-weight:900;">Contract Address</div>
+              <div class="mini">Always double-check before swapping.</div>
+            </div>
+            <a class="chip" href="https://solscan.io/token/8364EmLZLWnsTi8Eu6i2A3YcCrkCd4DYNMfKCqJcpump" target="_blank" rel="noreferrer">View on Solscan</a>
+          </div>
+
+          <div id="caText" class="ca mono">8364EmLZLWnsTi8Eu6i2A3YcCrkCd4DYNMfKCqJcpump</div>
+          <div class="mini" style="margin-top:10px;">
+            Tip: pin this CA in Telegram and X bio to reduce fake-copies.
+          </div>
+        </div>
+
+        <div class="copybox">
+          <div class="row">
+            <div style="font-weight:900;">Quick Links</div>
+            <div class="mini">Community + chart</div>
+          </div>
+          <div class="cta-row" style="margin-top:10px">
+            <a class="btn" href="https://dexscreener.com/solana/hwhfdt2qynd97uuifdh9phtxcnm5qa7zspcfvav3uqhv" target="_blank" rel="noreferrer">Dexscreener</a>
+            <a class="btn" href="https://t.me/+IQg9S6bCVXMwNjBl" target="_blank" rel="noreferrer">Telegram</a>
+            <a class="btn" href="https://x.com/ASUverse" target="_blank" rel="noreferrer">X</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="chart" class="section">
+      <h2>Live Chart</h2>
+      <div class="chart">
+        <iframe
+          title="Dexscreener NGOK Chart"
+          loading="lazy"
+          src="https://dexscreener.com/solana/hwhfdt2qynd97uuifdh9phtxcnm5qa7zspcfvav3uqhv?embed=1&theme=dark&trades=0&info=0">
+        </iframe>
+      </div>
+      <div class="mini" style="margin-top:10px">
+        If the embed doesn’t load (some browsers block it), use the Dexscreener button above.
+      </div>
+    </div>
+
+    <div id="tokenomics" class="section">
+      <h2>Tokenomics</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="pill"><span class="icon"></span> Supply & Basics</div>
+          <ul class="list">
+            <li><b>Total Supply:</b> 1,100,000,000 NGOK</li>
+            <li><b>Chain:</b> Solana</li>
+            <li><b>CA:</b> <span class="mono">8364EmLZLWnsTi8Eu6i2A3YcCrkCd4DYNMfKCqJcpump</span></li>
+            <li><b>Launch:</b> Fair Launch (community driven)</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="pill"><span class="icon" style="background:var(--brand2); box-shadow:0 0 0 6px rgba(167,139,250,.12)"></span> Trust Signals</div>
+          <ul class="list">
+            <li><b>Authority:</b> N/A (revoked)</li>
+            <li><b>No new mint:</b> supply is intended to be fixed</li>
+            <li><b>Community-first:</b> growth via holders + activity</li>
+            <li><b>Transparency:</b> everything verifiable on-chain</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="pill"><span class="icon" style="background:var(--warn); box-shadow:0 0 0 6px rgba(245,158,11,.12)"></span> Community Engine</div>
+          <ul class="list">
+            <li>Daily updates: holders, volume, milestones</li>
+            <li>Content loop: memes + mini-announcements</li>
+            <li>Milestone targets: 500 → 1,000 holders</li>
+            <li>Collabs with community mods (with rules)</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="pill"><span class="icon" style="background:var(--good); box-shadow:0 0 0 6px rgba(34,197,94,.12)"></span> Suggested Milestones</div>
+          <ul class="list">
+            <li><b>500 holders:</b> community airdrop/event</li>
+            <li><b>1,000 holders:</b> website upgrade + listings push</li>
+            <li><b>Brand kit:</b> logo pack + meme templates</li>
+            <li><b>Listings:</b> apply where possible (Dex, trackers)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="roadmap" class="section">
+      <h2>Roadmap</h2>
+      <div class="roadmap">
+        <div class="step">
+          <div class="num">1</div>
+          <div>
+            <div class="title">Foundation</div>
+            <div class="desc">Website + socials + pinned CA + daily community updates. Stabilize narrative: foundations &gt; pumps.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <div>
+            <div class="title">Momentum</div>
+            <div class="desc">Push to 500 holders with consistent content, safe community roles, and clear rules against scam links.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <div>
+            <div class="title">Expansion</div>
+            <div class="desc">Press visibility: trackers, collabs, small creators, and a professional tokenomics image kit.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="faq" class="section">
+      <h2>FAQ</h2>
+
+      <details>
+        <summary>Why did Phantom hide NGOK as “spam” before?</summary>
+        <p>New tokens often get flagged automatically when metadata and reputation signals are still limited. As socials, holders, and activity grow, the flag typically disappears.</p>
+      </details>
+
+      <details>
+        <summary>What does “Authority: N/A” mean?</summary>
+        <p>It usually means token control keys are revoked/disabled, making it harder to change token rules (like minting). Always verify via Solscan.</p>
+      </details>
+
+      <details>
+        <summary>Is vesting needed for NGOK?</summary>
+        <p>NGOK’s narrative is fair launch. For memecoins, users often care more about liquidity health, holder growth, and transparent comms than classic vesting schedules.</p>
+      </details>
+
+      <details>
+        <summary>How do I avoid fake NGOK tokens?</summary>
+        <p>Only use the official CA shown on this site and pinned in Telegram. Double-check before swapping.</p>
+      </details>
+    </div>
+
+    <div class="footer">
+      <div class="wrap">
+        <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+          <div><b>NGOK</b> © 2026 • Network Growth On-chain Kinetics</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="chip" href="https://t.me/+IQg9S6bCVXMwNjBl" target="_blank" rel="noreferrer">Telegram</a>
+            <a class="chip" href="https://x.com/ASUverse" target="_blank" rel="noreferrer">X</a>
+            <a class="chip" href="https://dexscreener.com/solana/hwhfdt2qynd97uuifdh9phtxcnm5qa7zspcfvav3uqhv" target="_blank" rel="noreferrer">Dexscreener</a>
+          </div>
+        </div>
+
+        <p style="margin:14px 0 0; color:rgba(255,255,255,.52); line-height:1.55;">
+          Disclaimer: This website is for community information only and is not financial advice. Crypto is high-risk.
+          Always do your own research.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Copied!</div>
+
+  <script>
+    const CA = "8364EmLZLWnsTi8Eu6i2A3YcCrkCd4DYNMfKCqJcpump";
+
+    function toast(msg){
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(()=>t.classList.remove("show"), 1200);
+    }
+
+    document.getElementById("copyBtn").addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(CA);
+        toast("CA copied ✅");
+      }catch(e){
+        // fallback
+        const el = document.createElement("textarea");
+        el.value = CA;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand("copy");
+        document.body.removeChild(el);
+        toast("CA copied ✅");
+      }
+    });
+  </script>
+</body>
+</html>
